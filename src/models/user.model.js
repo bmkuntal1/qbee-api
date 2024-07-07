@@ -13,7 +13,7 @@ const User = db.sequelize.define("users", {
   password: {
     type: sequelize.STRING,
     AllowNull: false,
-  },
+  }
 });
 
 module.exports = User;
