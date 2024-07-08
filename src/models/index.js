@@ -8,11 +8,15 @@ const { Sequelize } = require("sequelize");
 // });
 
 const sequelize = new Sequelize("postgres://default:jDTvg37wHQLf@ep-rough-unit-a123cylq.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require", {
-  dialect: "postgres", ssl: true,
+  dialect: "postgres", 
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000,
+  },
+  ssl: true,
   define: {
-    underscored: true,
-    createdAt: "created_at",
-    updatedAt: "updated_at",
+    underscored: true
   },
 
 });

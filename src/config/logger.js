@@ -1,4 +1,5 @@
 const winston = require('winston');
+const process = require('process');
 const { combine, timestamp, json } = winston.format;
 
 const logger = winston.createLogger({

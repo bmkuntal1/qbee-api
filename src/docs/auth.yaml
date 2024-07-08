@@ -1,70 +1,80 @@
-swagger: "2.0"
-info:
-  title: Auth API
-  version: 1.0.0
+definitions:
+  LoginRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - email
+      - password
+    example:
+      email: user@test.com
+      password: pass@123
+  RegisterRequest:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - name
+      - email
+      - password
+    example:
+      firstName: Test
+      lastName: User
+      email: user@test.com
+      password: pass@123
+  AuthResponse:
+    type: object
+    properties:
+      token:
+        type: string
+      refreshToken:
+        type: string
+      expiresIn:
+        type: integer
+    example:
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYxMjIwNjIwMCwiZXhwIjoxNjEyMjA5ODAwfQ.1
+      refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYxMjIwNjIwMCwiZXhwIjoxNjEyMjA5ODAwfQ.1
+      expiresIn: 3600
 paths:
   /auth/register:
     post:
       summary: Register user
-      description: Use this endpoint to register a new user.
-      consumes:
-        - application/json
-      produces:
-        - application/json
+      tags:
+        - auth
       parameters:
         - name: user
           in: body
           description: User data
           required: true
           schema:
-            type: object
-            properties:
-              name:
-                type: string
-              email:
-                type: string
-              password:
-                type: string
-            example:
-              name: Test User
-              email: test@user.com
-              password: pass@123
+            $ref: '#/definitions/RegisterRequest'
       responses:
         200:
           description: Successful registration
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
   /auth/login:
     post:
       summary: Authenticate user
-      description: Use this endpoint to authenticate a user and generate a token.
-      consumes:
-        - application/json
-      produces:
-        - application/json
+      tags:
+        - auth
       parameters:
         - name: credentials
           in: body
           description: User credentials
           required: true
           schema:
-            type: object
-            properties:
-              email:
-                type: string
-              password:
-                type: string
-            example:
-              email: test@user.com
-              password: pass@123
+            $ref: '#/definitions/LoginRequest'
       responses:
         200:
           description: Successful authentication
           schema:
-            type: object
-            properties:
-              token:
-                type: string
+            $ref: '#/definitions/AuthResponse'

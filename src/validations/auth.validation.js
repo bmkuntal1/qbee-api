@@ -1,13 +1,12 @@
-// register and login validation
-const req = require("express/lib/request");
 const Joi = require("joi");
 const custom = require("./custom.validation");
 
 const register = {
   body: Joi.object().keys({
+    firstName: Joi.string().required().max(50),
+    lastName: Joi.string().required().max(50),
     email: Joi.string().required().email(),
     password: custom.password,
-    name: Joi.string().required().max(128),
   }),
 };
 

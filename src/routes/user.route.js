@@ -1,41 +1,65 @@
-const express = require("express");
-const userService = require("../services/user.service");
+const express = require('express')
+const httpStatus = require('http-status')
+const userService = require('../services/user.service')
+const validate = require('../middlewares/validate.middleware')
+const schema = require('../validations/user.validation')
 
-const router = express.Router();
+const router = express.Router()
 
-router.get("/", async (req, res) => {
-    const users = await userService.findAll();
-    res.status(200).json(users);
-});
+router.get('/', validate(schema.getAll), async (req, res) => {
+  const users = await userService.findAll(req.query)
+  res.status(200).json(users)
+})
 
-router.get("/:id", async (req, res) => {
-    const user = await userService.findOne(req.params.id);
+router.get('/:id', async (req, res, next) => {
+  try {
+    const user = await userService.findOne(req.params.id)
     if (!user) {
-        return res.status(404).end();
+      throw new Error(httpStatus.NOT_FOUND, 'User not found')
     }
-    res.status(200).json(user);
-});
+    res.status(200).json(user)
+  } catch (error) {
+    next(error)
+  }
+})
 
-router.post("/", async (req, res) => {
-    const user = await userService.create(req.body);
-    res.status(201).json(user);
-});
-
-router.put("/:id", async (req, res) => {
-    const user = await userService.update(req.params.id, req.body);
+router.get('/:id/detail', async (req, res, next) => {
+  try {
+    const user = await userService.findOne(req.params.id)
     if (!user) {
-        return res.status(404).end();
+      throw new Error(httpStatus.NOT_FOUND, 'User not found')
     }
-    res.status(200).json(user);
-});
+    res.status(200).json(user)
+  } catch (error) {
+    next(error)
+  }
+})
 
-router.delete("/:id", async (req, res) => {
-    const user = await userService.findOne(req.params.id);
-    if (!user) {
-        return res.status(404).end();
-    }
-    await userService.remove(req.params.id);
-    res.status(204).end();
-});
+router.post('/', async (req, res, next) => {
+  try {
+    await userService.create(req.body)
+    res.status(201).end()
+  } catch (error) {
+    next(error)
+  }
+})
 
-module.exports = router;
+router.put('/', validate(schema.update), async (req, res, next) => {
+  try {
+    await userService.update(req.body)
+    res.status(204).end()
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await userService.remove(req.params.id)
+    res.status(204).end()
+  } catch (error) {
+    next(error)
+  }
+})
+
+module.exports = router
