@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs')
 const userService = require('../services/user.service')
 const auth = require('../middlewares/auth.middleware')
 const ApiError = require('../utils/ApiError')
+const httpStatus = require('http-status')
 const { JWT_SECRET } = process.env
 
 router.post('/register', validate(schema.register), async (req, res) => {
@@ -26,11 +27,11 @@ router.post('/login', validate(schema.login), async (req, res) => {
     const { email, password } = req.body
     const user = await userService.findOneByEmail(email)
     if (!user) {
-      throw new ApiError('User not found')
+      throw new ApiError(httpStatus.BAD_REQUEST,'User not found')
     }
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
-      throw new ApiError('Invalid credentials')
+      throw new ApiError( httpStatus.BAD_REQUEST,'Invalid credentials')
     }
     const payload = {
       id: user.id,
@@ -45,6 +46,7 @@ router.post('/login', validate(schema.login), async (req, res) => {
       expiresIn: 3600
     })
   } catch (error) {
+    console.log(error)
     res.status(400).json({ message: error.message })
   }
 })
@@ -72,8 +74,8 @@ router.post('/refresh', async (req, res) => {
   }
 })
 
-router.get('/user', auth, (req, res) => {
-  const user = userService.findOne(req.user.id)
+router.get('/user', auth, async (req, res) => {
+  const user =await userService.findOne(req.user.id)
   res.status(200).json(user)
 })
 

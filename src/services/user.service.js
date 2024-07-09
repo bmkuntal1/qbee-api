@@ -2,6 +2,7 @@ const httpStatus = require('http-status')
 const { Op, Sequelize } = require('sequelize')
 const User = require('../models/user.model.js')
 const ApiError = require('../utils/ApiError.js')
+const uploadFile = require('../utils/uploadFile.js')
 
 const findAll = async ({ search, page, pageSize }) => {
   //like name or email
@@ -21,6 +22,7 @@ const findAll = async ({ search, page, pageSize }) => {
       'firstName',
       'lastName',
       'role',
+      'avatar',
       'createdAt',
       'updatedAt',
       [
@@ -62,7 +64,7 @@ const create = async (data) => {
   if (emailTaken) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email is already taken')
   }
-  await User.create(data);
+  await User.create(data)
 }
 
 const update = async (data) => {
@@ -74,8 +76,8 @@ const update = async (data) => {
     where: {
       id: data.id
     }
-  })
-}
+  });
+};
 
 const remove = async (id) => {
   const user = await findOne(id)
@@ -89,11 +91,22 @@ const remove = async (id) => {
   })
 }
 
+const getProfile = async (id) => {
+  const user = await User.findByPk(id, {
+    attributes: { exclude: ['password'] }
+  })
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
+  }
+  return user
+}
+
 module.exports = {
   create,
   findAll,
   findOne,
   findOneByEmail,
   update,
-  remove
+  remove,
+  getProfile
 }

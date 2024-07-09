@@ -1,0 +1,7 @@
+# QBee-API
+
+## Main Features
+
+<table><tbody><tr><td>S/N</td><td>Module</td><td>Feature</td><td>User</td><td>Path</td><td>Status</td></tr><tr><td rowspan="3">1.</td><td rowspan="3">Auth</td><td>Register</td><td>public</td><td>api/auth/login</td><td>done</td></tr><tr><td>Login</td><td>public</td><td>api/auth/login</td><td>done</td></tr><tr><td>Current User</td><td>current user</td><td>api/auth/user</td><td>done</td></tr><tr><td rowspan="3">2.</td><td rowspan="3">User</td><td>Read/Update Profile</td><td>current user</td><td>api/user/profile</td><td>done</td></tr><tr><td>Update Avatar</td><td>current user</td><td>api/user/avatar</td><td>done</td></tr><tr><td>Change Password</td><td>current user</td><td>api/user/change-password</td><td>done</td></tr><tr><td rowspan="3">3.</td><td rowspan="3">Users</td><td>CRUD</td><td>admin</td><td>api/users</td><td>done</td></tr><tr><td>Details</td><td>admin</td><td>api/users/:id/detail</td><td>done</td></tr><tr><td>Change Password</td><td>admin</td><td>api/users/change-password</td><td>done</td></tr><tr><td rowspan="3">4.</td><td rowspan="3">System</td><td>API Info</td><td>admin</td><td>api/info</td><td>done</td></tr><tr><td>Show Logs</td><td>admin</td><td>api/logs</td><td>done</td></tr><tr><td>Show Log Content</td><td>admin</td><td>api/logs/::file</td><td>done</td></tr></tbody></table>
+
+CRUD: Create/Read/Update/Delete

@@ -8,6 +8,7 @@ CREATE TABLE users (
     phone_number VARCHAR(30) NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(255) NULL,
+    avatar VARCHAR(255) NULL,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL

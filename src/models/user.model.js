@@ -23,6 +23,9 @@ const User = db.sequelize.define("users", {
   role: {
     type: sequelize.STRING,
   },
+  avatar: {
+    type: sequelize.STRING,
+  },
   isActive: {
     type: sequelize.BOOLEAN,
     defaultValue: true,
